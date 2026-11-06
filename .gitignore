@@ -19,6 +19,11 @@ bin/main/application.yaml
 *.iml
 *.ipr
 
+# H2 database files
+/data/
+*.mv.db
+*.trace.db
+
 .DS_Store
 
 applicationinsights-agent-*.jar
