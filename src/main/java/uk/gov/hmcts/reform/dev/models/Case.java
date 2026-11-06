@@ -32,7 +32,7 @@ public class Case {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 200)
+    @Column(length = 2000)
     private String description;
 
     @NotNull(message = "Status is required")
