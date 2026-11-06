@@ -1,0 +1,159 @@
+openapi: 3.1.0
+info:
+  description: REST API for managing cases
+  title: Case Management API
+  version: 1.0.0
+servers:
+- description: Generated server url
+  url: http://localhost:4000
+tags:
+- description: Case management operations
+  name: Cases
+paths:
+  /:
+    get:
+      operationId: welcome
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: OK
+      tags:
+      - root-controller
+  /cases/:
+    get:
+      description: Returns all registered cases
+      operationId: getAll
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Case"
+          description: Cases successfully retrieved
+      summary: Get all cases
+      tags:
+      - Cases
+    post:
+      description: Creates a new case
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Case"
+        required: true
+      responses:
+        "201":
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Case"
+          description: Case successfully created
+        "400":
+          description: Invalid case details
+      summary: Create a case
+      tags:
+      - Cases
+  /cases/{id}:
+    delete:
+      description: Deletes a case using its unique ID
+      operationId: delete
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Case successfully deleted
+        "404":
+          description: Case not found
+      summary: Delete a case
+      tags:
+      - Cases
+    get:
+      description: Returns a case using its unique ID
+      operationId: getById
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Case"
+          description: Case found
+        "404":
+          description: Case not found
+      summary: Get case by ID
+      tags:
+      - Cases
+    put:
+      description: Updates an existing case
+      operationId: update
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Case"
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Case"
+          description: Case successfully updated
+        "400":
+          description: Invalid case details
+        "404":
+          description: Case not found
+      summary: Update a case
+      tags:
+      - Cases
+components:
+  schemas:
+    Case:
+      type: object
+      properties:
+        description:
+          type: string
+        dueDate:
+          type: string
+          format: date-time
+        id:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+          - OPEN
+          - IN_PROGRESS
+          - COMPLETED
+          - CANCELLED
+        title:
+          type: string
+          minLength: 1
+      required:
+      - dueDate
+      - status
+      - title
